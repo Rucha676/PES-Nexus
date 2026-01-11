@@ -1,0 +1,117 @@
+/**
+ * This ruleset enforces a mixed security model tailored for the PES Nexus application.
+ *
+ * Core Philosophy:
+ * The security model is designed to be both open and secure where appropriate. Publicly
+ * useful information, like course syllabuses, is readable by everyone. User-specific
+ * data, such as personal profiles and interaction history, is strictly private and
+ * accessible only by the owning user. An admin user has special privileges to view
+ * all user data for moderation and support.
+ *
+ * Data Structure:
+ * - /syllabuses/{syllabusId}: A top-level collection for public syllabus documents.
+ * - /users/{userId}: A top-level collection containing private user profiles.
+ * - /doubts/{doubtId}: A top-level collection for student doubts, readable by all signed-in users.
+ * - /users/{userId}/history/{historyId}: A subcollection for a user's private activity log.
+ * - /leaderboard/{userId}: A top-level collection for public leaderboard data.
+ *
+ * Key Security Decisions:
+ * - Admin Access: A designated Admin UID has special read-only access to all user
+ *   data and doubts for administrative purposes.
+ * - Public Read, No Write: The '/syllabuses' and '/leaderboard' collections are globally readable to
+ *   facilitate easy access to course information. Writes are disabled for most users
+ *   as they should be handled by a secure admin/backend process.
+ * - Strict User Ownership: Data under '/users/{userId}' and its subcollections is private.
+ *   A user can only ever read or write documents within their own data tree.
+ * - Public Doubts: The '/doubts' collection is readable by any signed-in user, allowing
+ *   seniors to find questions. A user can only create a doubt for themselves. A user
+ *   can only delete their own doubt. Updates are restricted to either the owner or
+ *   a senior resolving the doubt.
+ * - User Enumeration Prevention: Listing the entire '/users' collection is explicitly
+ *   disallowed for regular users to protect privacy, but allowed for the admin.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- Helper Functions ---
+    
+    // Checks if the current user's UID matches the provided userId.
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Checks if the current user is the designated admin by comparing their UID.
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == '0tnz4feLMRcGQX9Gvl5QPdiSfgX2';
+    }
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Checks if a senior is resolving a doubt. 
+    // This is true if the user is signed in, they are not the original owner,
+    // the new status is 'resolved', and only the 'status', 'senior', and 'solution' fields are being updated.
+    function isResolvingDoubt() {
+      let changedKeys = request.resource.data.keys().diff(resource.data.keys());
+      return isSignedIn()
+             && !isOwner(resource.data.studentId)
+             && request.resource.data.status == 'resolved'
+             && changedKeys.hasAll(['status', 'senior', 'solution'])
+             && changedKeys.size() == 3;
+    }
+
+    // --- Collection Rules ---
+
+    match /syllabuses/{syllabusId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    match /leaderboard/{entryId} {
+      allow get, list: if isSignedIn();
+      allow write: if false; // Should only be updated by a backend function
+    }
+
+    match /users/{userId} {
+      allow get, create, update, delete: if isOwner(userId);
+      // Admin can read any user profile.
+      allow get: if isAdmin();
+      // Only the admin can list all users.
+      allow list: if isAdmin();
+
+      match /history/{historyId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+    
+    match /doubts/{doubtId} {
+      // Any signed-in user can read the list of doubts or get a single doubt.
+      allow read: if isSignedIn();
+
+      // A user can create a doubt, but only if they are the student asking,
+      // and they are setting the timestamp correctly.
+      allow create: if isOwner(request.resource.data.studentId)
+                       && request.resource.data.timestamp == request.time;
+      
+      // An update is allowed if the user is the owner OR if a signed-in user is resolving the doubt.
+      allow update: if isOwner(resource.data.studentId) || isResolvingDoubt();
+      
+      // Only the person who created the doubt can delete it.
+      allow delete: if isOwner(resource.data.studentId);
+    }
+    
+    // This allows a query on the /doubts collection by any signed in user.
+    match /doubts {
+        allow list: if isSignedIn();
+    }
+    
+    // Admin configuration document.
+    // This allows an admin to read the config, but nobody else can write to it.
+    match /configuration/admin {
+      allow get: if isAdmin();
+      allow write: if false; // Should be updated only through a trusted server process.
+    }
+  }
+}

@@ -1,0 +1,307 @@
+{
+  "entities": {
+    "Syllabus": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Syllabus",
+      "type": "object",
+      "description": "Represents the syllabus document for a specific course or program.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Syllabus entity."
+        },
+        "courseName": {
+          "type": "string",
+          "description": "The name of the course or program the syllabus belongs to (e.g., 'Electronics and Telecommunication 2nd Year')."
+        },
+        "year": {
+          "type": "number",
+          "description": "The academic year the syllabus is for (e.g., 2023)."
+        },
+        "major": {
+          "type": "string",
+          "description": "The major that this syllabus falls under."
+        },
+        "pdfStorageLocation": {
+          "type": "string",
+          "description": "The location where the syllabus PDF is stored (e.g., a URL or file path)."
+        },
+        "uploadDate": {
+          "type": "string",
+          "description": "The date and time the syllabus was uploaded.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "courseName",
+        "year",
+        "pdfStorageLocation",
+        "uploadDate"
+      ]
+    },
+    "Doubt": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Doubt",
+      "type": "object",
+      "description": "Represents a student's doubt or question regarding a specific topic.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Doubt entity."
+        },
+        "studentId": {
+          "type": "string",
+          "description": "The ID of the student who asked the doubt."
+        },
+        "studentName": {
+          "type": "string",
+          "description": "The name of the student who asked the doubt."
+        },
+        "studentYear": {
+          "type": "number",
+          "description": "The academic year of the student who asked the doubt."
+        },
+        "major": {
+          "type": "string",
+          "description": "The major of the student who asked the doubt."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the doubt."
+        },
+        "description": {
+          "type": "string",
+          "description": "The detailed description of the doubt."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The date and time the doubt was submitted.",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the doubt.",
+          "enum": [
+            "pending",
+            "resolved",
+            "rejected"
+          ]
+        },
+        "senior": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The name of the senior who resolved the doubt."
+        },
+        "solution": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The solution provided by the senior."
+        },
+        "syllabusId": {
+          "type": "string",
+          "description": "The syllabus associated with this doubt."
+        }
+      },
+      "required": [
+        "id",
+        "studentId",
+        "studentName",
+        "studentYear",
+        "major",
+        "title",
+        "description",
+        "timestamp",
+        "status",
+        "syllabusId"
+      ]
+    },
+    "History": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "History",
+      "type": "object",
+      "description": "Represents the history of user interactions and searches within the application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the History entity."
+        },
+        "studentId": {
+          "type": "string",
+          "description": "Reference to Student. (Relationship: Student 1:N History). The user who performed the action."
+        },
+        "query": {
+          "type": "string",
+          "description": "The search query or action performed by the user."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The date and time the action was performed.",
+          "format": "date-time"
+        },
+        "resultType": {
+          "type": "string",
+          "description": "The type of result returned (e.g., 'explanation', 'resource', 'mentorship')."
+        },
+        "resultId": {
+          "type": "string",
+          "description": "Reference to the entity that represents the result (e.g. id of Resource, Doubt, etc.)."
+        }
+      },
+      "required": [
+        "id",
+        "studentId",
+        "query",
+        "timestamp",
+        "resultType"
+      ]
+    },
+    "Student": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Student",
+      "type": "object",
+      "description": "Represents a student using the application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Student entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The student's full name."
+        },
+        "email": {
+          "type": "string",
+          "description": "The student's email address.",
+          "format": "email"
+        },
+        "major": {
+          "type": "string",
+          "description": "The student's major or field of study."
+        },
+        "year": {
+          "type": "number",
+          "description": "The student's academic year (e.g., 1, 2, 3, 4)."
+        },
+        "expertise": {
+          "type": "string",
+          "description": "Optional field for the student to list their areas of expertise."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "major",
+        "year"
+      ]
+    },
+    "LeaderboardEntry": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "LeaderboardEntry",
+        "type": "object",
+        "description": "Represents a single entry on the leaderboard for a senior.",
+        "properties": {
+            "id": { "type": "string", "description": "Unique identifier for the entry, typically the senior's user ID." },
+            "name": { "type": "string", "description": "The name of the senior." },
+            "points": { "type": "number", "description": "The total points accumulated by the senior." },
+            "doubtsResolved": { "type": "number", "description": "The number of doubts resolved by the senior." }
+        },
+        "required": ["id", "name", "points", "doubtsResolved"]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/syllabuses/{syllabusId}",
+        "definition": {
+          "entityName": "Syllabus",
+          "schema": {
+            "$ref": "#/backend/entities/Syllabus"
+          },
+          "description": "Stores syllabus documents. Allows retrieval of syllabus details. Write access restricted to admins.",
+          "params": [
+            {
+              "name": "syllabusId",
+              "description": "The unique identifier for the syllabus document."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "Student",
+          "schema": {
+            "$ref": "#/backend/entities/Student"
+          },
+          "description": "Stores student profile information. Path-based ownership: only the user can read and write their own profile.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user (student)."
+            }
+          ]
+        },
+        "subcollections": [
+          {
+            "path": "/users/{userId}/history/{historyId}",
+            "definition": {
+              "entityName": "History",
+              "schema": {
+                "$ref": "#/backend/entities/History"
+              },
+              "description": "Stores the history of user actions and searches. Path-based ownership: only the user can read and write their history.",
+              "params": [
+                {
+                  "name": "userId",
+                  "description": "The unique identifier for the user (student)."
+                },
+                {
+                  "name": "historyId",
+                  "description": "The unique identifier for the history entry."
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "path": "/doubts/{doubtId}",
+        "definition": {
+          "entityName": "Doubt",
+          "schema": {
+            "$ref": "#/backend/entities/Doubt"
+          },
+          "description": "Stores all student doubts. Readable by signed-in users. Creation is restricted to the doubt owner. Updates are restricted to the owner or a senior resolving the doubt.",
+          "params": [
+            {
+              "name": "doubtId",
+              "description": "The unique identifier for the doubt entry."
+            }
+          ]
+        }
+      },
+      {
+          "path": "/leaderboard/{userId}",
+          "definition": {
+              "entityName": "LeaderboardEntry",
+              "schema": { "$ref": "#/backend/entities/LeaderboardEntry" },
+              "description": "Stores aggregated leaderboard data for each senior. Publicly readable.",
+              "params": [{ "name": "userId", "description": "The unique ID of the senior." }]
+          }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to facilitate the PES Nexus application's core features. Syllabuses are in a top-level public collection. All user-specific data, including history, are stored in subcollections under a top-level `/users/{userId}` document. Doubts are in a top-level collection to allow seniors to query for questions. Update rules for doubts are now more specific, allowing changes only by the owner or a senior resolving it. A `/leaderboard` collection stores pre-calculated scores for performance. This model is secure, scalable, and simplifies security rules."
+  }
+}
