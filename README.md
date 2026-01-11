@@ -18,8 +18,3 @@ PES-Nexus is a centralized platform designed to bridge the gap between students,
 * **Authentication:** Firebase Auth
 * **Storage:** Firebase Cloud Storage (for PDFs & Papers)
 * **Hosting:** Firebase Hosting
-
-## 📦 Installation & Setup
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/Rucha676/PES-Nexus.git](https://github.com/Rucha676/PES-Nexus.git)
