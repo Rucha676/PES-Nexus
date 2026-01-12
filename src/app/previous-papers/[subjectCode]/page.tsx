@@ -119,7 +119,7 @@ const papers: Record<string, PaperContent[]> = {
     ]
 };
 
-// This is a Server Component. It is now correctly typed.
+
 export default async function PreviousPaperPage({ params }: { params: { subjectCode: string } }) {
   const { subjectCode } = params;
   
@@ -130,6 +130,7 @@ export default async function PreviousPaperPage({ params }: { params: { subjectC
     notFound();
   }
 
+  // Find the papers for the subject. If none exist, default to an empty array.
   const subjectPapers = papers[subjectCode] || [];
 
   // Render the Client Component and pass the data as props

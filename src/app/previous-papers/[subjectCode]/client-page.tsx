@@ -74,6 +74,9 @@ export function PreviousPaperClientPage({ subjectCode, subject, subjectPapers }:
       )
   }
 
+  const hasPapers = subjectPapers && subjectPapers.length > 0;
+  const paperYear = hasPapers ? subjectPapers[0].year : null;
+
   return (
     <div className="flex flex-col h-screen bg-muted/20">
       <header className="p-4 border-b border-border/40 flex items-center gap-4 bg-background sticky top-0 z-10">
@@ -90,10 +93,12 @@ export function PreviousPaperClientPage({ subjectCode, subject, subjectPapers }:
       <div className="flex-1 p-8 overflow-y-auto">
         <Card className="max-w-4xl mx-auto bg-background/80">
             <CardHeader>
-                <CardTitle>Exam Paper ({subjectPapers?.[0]?.year || 'N/A'})</CardTitle>
+                <CardTitle>
+                    {paperYear ? `Exam Paper (${paperYear})` : 'Exam Paper'}
+                </CardTitle>
             </CardHeader>
             <CardContent>
-                {subjectPapers && subjectPapers.length > 0 ? (
+                {hasPapers ? (
                     <div className="space-y-8">
                         {subjectPapers.map((paperContent, index) => (
                            <QuestionPaper key={index} content={paperContent} />
