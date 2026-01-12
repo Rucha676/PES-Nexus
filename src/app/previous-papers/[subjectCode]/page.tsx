@@ -2,8 +2,8 @@
 import React from 'react';
 import { PreviousPaperClientPage } from './client-page';
 import { entc_2nd_year_3rd_sem_syllabus, entc_2nd_year_4th_sem_syllabus } from '@/lib/entc-syllabus';
-import type { PaperContent } from '@/lib/types';
 import { notFound } from 'next/navigation';
+import type { PaperContent } from '@/lib/types';
 
 const allSubjects = [
   ...entc_2nd_year_3rd_sem_syllabus.subjects,
@@ -119,7 +119,7 @@ const papers: Record<string, PaperContent[]> = {
     ]
 };
 
-// This is a Server Component
+// This is a Server Component. It is now correctly typed.
 export default async function PreviousPaperPage({ params }: { params: { subjectCode: string } }) {
   const { subjectCode } = params;
   

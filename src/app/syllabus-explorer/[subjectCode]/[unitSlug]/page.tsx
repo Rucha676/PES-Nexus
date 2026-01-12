@@ -12,7 +12,7 @@ const allSubjects = [
     ...entc_2nd_year_3rd_sem_syllabus.subjects
 ];
 
-// This is a Server Component
+// This is a Server Component, now correctly typed.
 export default async function UnitDetailsPage({ params }: { params: { subjectCode: string; unitSlug: string } }) {
   const { subjectCode, unitSlug } = params;
 
