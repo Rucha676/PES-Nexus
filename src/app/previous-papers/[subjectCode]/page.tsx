@@ -119,7 +119,7 @@ const papers: Record<string, PaperContent[]> = {
 };
 
 // This is a Server Component
-export default function PreviousPaperPage({ params }: { params: { subjectCode: string } }) {
+export default async function PreviousPaperPage({ params }: { params: { subjectCode: string } }) {
   const { subjectCode } = params;
   
   // Find the subject and papers on the server

@@ -12,7 +12,7 @@ const allSubjects = [
 ];
 
 // This is a Server Component
-export default function UnitDetailsPage({ params }: { params: { subjectCode: string; unitSlug: string } }) {
+export default async function UnitDetailsPage({ params }: { params: { subjectCode: string; unitSlug: string } }) {
   const { subjectCode, unitSlug } = params;
 
   // Find the subject and unit on the server
@@ -40,7 +40,7 @@ export default function UnitDetailsPage({ params }: { params: { subjectCode: str
          <div className="flex items-center text-sm text-muted-foreground">
            <Link href="/syllabus-explorer" className="hover:underline">Syllabus Explorer</Link>
            <ChevronRight className="h-4 w-4 mx-1" />
-           <Link href={`/syllabus-explorer`} className="hover:underline">{subject.name}</Link>
+           <Link href={`/syllabus-explorer/${subject.code}`} className="hover:underline">{subject.name}</Link>
            <ChevronRight className="h-4 w-4 mx-1" />
            <span className="text-foreground">{unit.title}</span>
          </div>
