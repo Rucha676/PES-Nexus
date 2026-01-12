@@ -2,13 +2,13 @@
 import React from 'react';
 import { PreviousPaperClientPage, type PaperContent } from './client-page';
 import { entc_2nd_year_3rd_sem_syllabus, entc_2nd_year_4th_sem_syllabus } from '@/lib/entc-syllabus';
+import type { PageProps } from '@/lib/types';
 
 const allSubjects = [
   ...entc_2nd_year_3rd_sem_syllabus.subjects,
   ...entc_2nd_year_4th_sem_syllabus.subjects
 ];
 
-// DATA IS NOW DEFINED ON THE SERVER
 const papers: Record<string, PaperContent[]> = {
     'ETE01203': [ // Digital Systems
         {
@@ -119,7 +119,7 @@ const papers: Record<string, PaperContent[]> = {
 };
 
 // This is a Server Component
-export default async function PreviousPaperPage({ params }: { params: { subjectCode: string } }) {
+export default async function PreviousPaperPage({ params }: PageProps<{ subjectCode: string }>) {
   const { subjectCode } = params;
   
   // Find the subject and papers on the server

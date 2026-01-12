@@ -5,6 +5,8 @@ import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { UnitDetailsClientPage } from './client-page';
 import React from 'react';
+import type { PageProps } from '@/lib/types';
+
 
 const allSubjects = [
     ...entc_2nd_year_4th_sem_syllabus.subjects,
@@ -12,7 +14,7 @@ const allSubjects = [
 ];
 
 // This is a Server Component
-export default async function UnitDetailsPage({ params }: { params: { subjectCode: string; unitSlug: string } }) {
+export default async function UnitDetailsPage({ params }: PageProps<{ subjectCode: string; unitSlug: string }>) {
   const { subjectCode, unitSlug } = params;
 
   // Find the subject on the server
