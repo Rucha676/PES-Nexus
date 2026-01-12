@@ -7,32 +7,10 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import React from 'react';
 import type { entc_2nd_year_3rd_sem_syllabus } from '@/lib/entc-syllabus';
+import type { PaperContent } from '@/lib/types';
 
 // This is the correct way to derive the Subject type
 type Subject = (typeof entc_2nd_year_3rd_sem_syllabus.subjects)[0];
-
-type Question = {
-  number: string;
-  text: string;
-  marks: string;
-};
-
-type Section = {
-  title: string;
-  instructions: string;
-  questions: Question[];
-};
-
-export type PaperContent = {
-  year: number;
-  college: string;
-  title: string;
-  courseInfo: string;
-  time: string;
-  totalMarks: number;
-  instructions: string[];
-  sections: Section[];
-};
 
 function QuestionPaper({ content }: { content: PaperContent }) {
     return (

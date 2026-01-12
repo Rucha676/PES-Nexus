@@ -1,5 +1,28 @@
 
 
+type Question = {
+  number: string;
+  text: string;
+  marks: string;
+};
+
+type Section = {
+  title: string;
+  instructions: string;
+  questions: Question[];
+};
+
+export type PaperContent = {
+  year: number;
+  college: string;
+  title: string;
+  courseInfo: string;
+  time: string;
+  totalMarks: number;
+  instructions: string[];
+  sections: Section[];
+};
+
 export type Syllabus = {
     id: string;
     courseName: string;

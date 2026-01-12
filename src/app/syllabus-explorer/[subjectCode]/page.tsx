@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { entc_2nd_year_3rd_sem_syllabus, entc_2nd_year_4th_sem_syllabus } from '@/lib/entc-syllabus';
-import type { PageProps } from '@/lib/types';
 import { SubjectClientPage } from './subject-client-page';
 import { notFound } from 'next/navigation';
 
@@ -12,7 +11,7 @@ const allSubjects = [
 ];
 
 
-export default async function SubjectDetailsPage({ params }: PageProps<{ subjectCode: string }>) {
+export default async function SubjectDetailsPage({ params }: { params: { subjectCode: string } }) {
   const { subjectCode } = params;
   
   // Find the subject on the server

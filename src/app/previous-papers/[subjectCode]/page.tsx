@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { PreviousPaperClientPage, type PaperContent } from './client-page';
+import { PreviousPaperClientPage } from './client-page';
 import { entc_2nd_year_3rd_sem_syllabus, entc_2nd_year_4th_sem_syllabus } from '@/lib/entc-syllabus';
-import type { PageProps } from '@/lib/types';
+import type { PaperContent } from '@/lib/types';
+import { notFound } from 'next/navigation';
 
 const allSubjects = [
   ...entc_2nd_year_3rd_sem_syllabus.subjects,
@@ -119,11 +120,16 @@ const papers: Record<string, PaperContent[]> = {
 };
 
 // This is a Server Component
-export default async function PreviousPaperPage({ params }: PageProps<{ subjectCode: string }>) {
+export default async function PreviousPaperPage({ params }: { params: { subjectCode: string } }) {
   const { subjectCode } = params;
   
   // Find the subject and papers on the server
   const subject = allSubjects.find(s => s.code === subjectCode);
+  
+  if (!subject) {
+    notFound();
+  }
+
   const subjectPapers = papers[subjectCode] || [];
 
   // Render the Client Component and pass the data as props
