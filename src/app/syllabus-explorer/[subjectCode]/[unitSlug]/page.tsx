@@ -15,11 +15,12 @@ const allSubjects = [
 export default async function UnitDetailsPage({ params }: { params: { subjectCode: string; unitSlug: string } }) {
   const { subjectCode, unitSlug } = params;
 
-  // Find the subject and unit on the server
+  // Find the subject on the server
   const subject = allSubjects.find(
     s => s.code === subjectCode
   );
 
+  // Find the unit WITHIN the found subject. This fixes the crash.
   const unit = subject?.units?.find(u => slugify(u.title) === unitSlug);
 
   if (!subject || !unit || !unit.topics) {
