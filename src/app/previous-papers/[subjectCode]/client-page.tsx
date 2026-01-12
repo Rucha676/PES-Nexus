@@ -2,15 +2,12 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { entc_2nd_year_3rd_sem_syllabus, entc_2nd_year_4th_sem_syllabus } from '@/lib/entc-syllabus';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import React from 'react';
+import type { entc_2nd_year_3rd_sem_syllabus, entc_2nd_year_4th_sem_syllabus } from '@/lib/entc-syllabus';
 
-const allSubjects = [
-  ...entc_2nd_year_3rd_sem_syllabus.subjects,
-  ...entc_2nd_year_4th_sem_syllabus.subjects
-];
+type Subject = (typeof entc_2nd_year_3rd_sem_syllabus.subjects)[0];
 
 type Question = {
   number: string;
@@ -189,8 +186,7 @@ function QuestionPaper({ content }: { content: PaperContent }) {
     )
 }
 
-export function PreviousPaperClientPage({ subjectCode }: { subjectCode: string }) {
-  const subject = allSubjects.find(s => s.code === subjectCode);
+export function PreviousPaperClientPage({ subjectCode, subject }: { subjectCode: string, subject?: Subject }) {
   const subjectPapers = papers[subjectCode];
   
   if (!subject) {

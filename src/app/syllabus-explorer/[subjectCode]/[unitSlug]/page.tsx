@@ -9,18 +9,15 @@ import React from 'react';
 export default function UnitDetailsPage({ params }: { params: Promise<{ subjectCode: string; unitSlug: string }> }) {
   const { subjectCode, unitSlug } = React.use(params);
 
-  // Combine all subjects from all syllabus files
   const allSubjects = [
       ...entc_2nd_year_4th_sem_syllabus.subjects,
       ...entc_2nd_year_3rd_sem_syllabus.subjects
   ];
 
-  // Find the subject from the combined list
   const subject = allSubjects.find(
     s => s.code === subjectCode
   );
 
-  // Find the unit within that subject using the slug
   const unit = subject?.units?.find(u => slugify(u.title) === unitSlug);
 
   if (!subject || !unit || !unit.topics) {
