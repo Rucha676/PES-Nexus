@@ -39,6 +39,7 @@ async function getExplanations(topics: string[]): Promise<string[]> {
     }
 }
 
+// This component now receives the 'unit' data as a prop and is only responsible for UI
 export function UnitDetailsClientPage({ unit }: { unit: SyllabusUnit }) {
   const [explanations, setExplanations] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);

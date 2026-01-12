@@ -11,9 +11,12 @@ const allSubjects = [
     ...entc_2nd_year_3rd_sem_syllabus.subjects
 ];
 
-export default function UnitDetailsPage({ params }: { params: Promise<{ subjectCode: string; unitSlug: string }> }) {
-  const { subjectCode, unitSlug } = React.use(params);
+// This is a Server Component
+export default function UnitDetailsPage({ params }: { params: { subjectCode: string; unitSlug: string } }) {
+  // NOT a promise anymore
+  const { subjectCode, unitSlug } = params;
 
+  // Find the subject and unit on the server
   const subject = allSubjects.find(
     s => s.code === subjectCode
   );
@@ -38,7 +41,7 @@ export default function UnitDetailsPage({ params }: { params: Promise<{ subjectC
          <div className="flex items-center text-sm text-muted-foreground">
            <Link href="/syllabus-explorer" className="hover:underline">Syllabus Explorer</Link>
            <ChevronRight className="h-4 w-4 mx-1" />
-           <span>{subject.name}</span>
+           <Link href={`/syllabus-explorer`} className="hover:underline">{subject.name}</Link>
            <ChevronRight className="h-4 w-4 mx-1" />
            <span className="text-foreground">{unit.title}</span>
          </div>
@@ -46,6 +49,7 @@ export default function UnitDetailsPage({ params }: { params: Promise<{ subjectC
         <p className="text-lg text-muted-foreground">{subject.name} ({subject.code})</p>
       </header>
       <div className="flex-1 p-8 overflow-y-auto">
+        {/* Render the client component, passing the found unit data as a prop */}
         <UnitDetailsClientPage unit={unit} />
       </div>
     </>
