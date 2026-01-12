@@ -6,9 +6,8 @@ import Link from 'next/link';
 import { UnitDetailsClientPage } from './client-page';
 import React from 'react';
 
-export default async function UnitDetailsPage({ params }: { params: { subjectCode: string; unitSlug: string } }) {
-  const resolvedParams = React.use(params);
-  const { subjectCode, unitSlug } = resolvedParams;
+export default function UnitDetailsPage({ params }: { params: Promise<{ subjectCode: string; unitSlug: string }> }) {
+  const { subjectCode, unitSlug } = React.use(params);
 
   // Combine all subjects from all syllabus files
   const allSubjects = [
