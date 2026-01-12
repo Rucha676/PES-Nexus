@@ -13,7 +13,6 @@ const allSubjects = [
 
 // This is a Server Component
 export default function UnitDetailsPage({ params }: { params: { subjectCode: string; unitSlug: string } }) {
-  // NOT a promise anymore
   const { subjectCode, unitSlug } = params;
 
   // Find the subject and unit on the server

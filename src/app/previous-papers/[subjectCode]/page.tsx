@@ -1,8 +1,7 @@
 
 import React from 'react';
-import { PreviousPaperClientPage } from './client-page';
+import { PreviousPaperClientPage, type PaperContent } from './client-page';
 import { entc_2nd_year_3rd_sem_syllabus, entc_2nd_year_4th_sem_syllabus } from '@/lib/entc-syllabus';
-import type { PaperContent } from './client-page';
 
 const allSubjects = [
   ...entc_2nd_year_3rd_sem_syllabus.subjects,
@@ -121,7 +120,6 @@ const papers: Record<string, PaperContent[]> = {
 
 // This is a Server Component
 export default function PreviousPaperPage({ params }: { params: { subjectCode: string } }) {
-  // NOT a promise anymore
   const { subjectCode } = params;
   
   // Find the subject and papers on the server
