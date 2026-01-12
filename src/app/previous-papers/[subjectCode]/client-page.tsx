@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -21,7 +22,7 @@ type Section = {
   questions: Question[];
 };
 
-type PaperContent = {
+export type PaperContent = {
   year: number;
   college: string;
   title: string;
@@ -32,7 +33,7 @@ type PaperContent = {
   sections: Section[];
 };
 
-const papers: Record<string, PaperContent[]> = {
+export const papers: Record<string, PaperContent[]> = {
     'ETE01203': [ // Digital Systems
         {
             year: 2025,
@@ -186,14 +187,18 @@ function QuestionPaper({ content }: { content: PaperContent }) {
     )
 }
 
-export function PreviousPaperClientPage({ subjectCode, subject }: { subjectCode: string, subject?: Subject }) {
-  const subjectPapers = papers[subjectCode];
-  
+interface PreviousPaperClientPageProps {
+  subjectCode: string;
+  subject?: Subject;
+  subjectPapers: PaperContent[];
+}
+
+export function PreviousPaperClientPage({ subjectCode, subject, subjectPapers }: PreviousPaperClientPageProps) {
   if (!subject) {
       return (
           <div className="flex-1 p-8">
               <h1 className="text-2xl font-bold">Subject Not Found</h1>
-              <p>The subject you are looking for does not exist.</p>
+              <p>The subject with code {subjectCode} does not exist.</p>
           </div>
       )
   }
@@ -214,10 +219,10 @@ export function PreviousPaperClientPage({ subjectCode, subject }: { subjectCode:
       <div className="flex-1 p-8 overflow-y-auto">
         <Card className="max-w-4xl mx-auto bg-background/80">
             <CardHeader>
-                <CardTitle>Exam Paper ({subjectPapers?.[0].year})</CardTitle>
+                <CardTitle>Exam Paper ({subjectPapers?.[0]?.year || 'N/A'})</CardTitle>
             </CardHeader>
             <CardContent>
-                {subjectPapers ? (
+                {subjectPapers && subjectPapers.length > 0 ? (
                     <div className="space-y-8">
                         {subjectPapers.map((paperContent, index) => (
                            <QuestionPaper key={index} content={paperContent} />

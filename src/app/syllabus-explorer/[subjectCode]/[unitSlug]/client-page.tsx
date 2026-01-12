@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -13,12 +14,11 @@ import { bulkSyllabusExplanation } from '@/ai/flows/bulk-syllabus-explanation';
 import { syllabus } from '@/lib/syllabus';
 import { BookText } from 'lucide-react';
 import Link from 'next/link';
+import type { entc_2nd_year_3rd_sem_syllabus } from '@/lib/entc-syllabus';
 
 // Define a type for the Unit object based on entc-syllabus data structure
-type SyllabusUnit = {
-    title: string;
-    topics: string[];
-};
+type SyllabusUnit = Exclude<(typeof entc_2nd_year_3rd_sem_syllabus.subjects)[0]['units'], null>[0];
+
 
 async function getExplanations(topics: string[]): Promise<string[]> {
     if (!topics || topics.length === 0) {

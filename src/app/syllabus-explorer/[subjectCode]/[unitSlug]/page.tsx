@@ -6,13 +6,13 @@ import Link from 'next/link';
 import { UnitDetailsClientPage } from './client-page';
 import React from 'react';
 
+const allSubjects = [
+    ...entc_2nd_year_4th_sem_syllabus.subjects,
+    ...entc_2nd_year_3rd_sem_syllabus.subjects
+];
+
 export default function UnitDetailsPage({ params }: { params: Promise<{ subjectCode: string; unitSlug: string }> }) {
   const { subjectCode, unitSlug } = React.use(params);
-
-  const allSubjects = [
-      ...entc_2nd_year_4th_sem_syllabus.subjects,
-      ...entc_2nd_year_3rd_sem_syllabus.subjects
-  ];
 
   const subject = allSubjects.find(
     s => s.code === subjectCode
