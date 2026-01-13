@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useMemo, useState, useEffect } from 'react';
@@ -30,6 +31,7 @@ export default function LeaderboardPage() {
     const seniorStats = new Map<string, { name: string; points: number; doubtsResolved: number; }>();
 
     resolvedDoubts.forEach(doubt => {
+      // Add a null check to prevent crashes if a resolved doubt somehow has no senior.
       if (doubt.senior) {
         const seniorName = doubt.senior; // Assuming senior's name is stored directly
         if (!seniorStats.has(seniorName)) {
