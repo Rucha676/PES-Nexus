@@ -116,46 +116,47 @@ export default function SeniorBridgePage() {
 
   const handleResolveDoubt = async () => {
     if (!firestore || !userProfile || !resolvingDoubt || !solution || !user) return;
-
+  
     try {
       const batch = writeBatch(firestore);
-
+  
       // 1. Update the doubt document
       const doubtRef = doc(firestore, 'doubts', resolvingDoubt.id);
       batch.update(doubtRef, {
         status: 'resolved',
         senior: userProfile.name,
         solution: solution,
+        timestamp: serverTimestamp(), // Explicitly update timestamp
       });
-
+  
       // 2. Update the senior's leaderboard entry
       const leaderboardRef = doc(firestore, 'leaderboard', user.uid);
       const leaderboardDoc = await getDoc(leaderboardRef);
-
+  
       if (leaderboardDoc.exists()) {
-          batch.update(leaderboardRef, {
-              points: increment(5),
-              doubtsResolved: increment(1)
-          });
+        batch.update(leaderboardRef, {
+          points: increment(5),
+          doubtsResolved: increment(1),
+        });
       } else {
-          batch.set(leaderboardRef, {
-              id: user.uid,
-              name: userProfile.name,
-              points: 5,
-              doubtsResolved: 1
-          });
+        batch.set(leaderboardRef, {
+          id: user.uid,
+          name: userProfile.name,
+          points: 5,
+          doubtsResolved: 1,
+        });
       }
-
+  
       // Commit the batch
       await batch.commit();
-
+  
       toast({
         title: 'Doubt Resolved!',
         description: "You've helped a fellow student and earned 5 points!",
       });
       setIsResolveDialogOpen(false);
       setResolvingDoubt(null);
-
+  
     } catch (error) {
       console.error("Error resolving doubt: ", error);
       toast({
@@ -164,7 +165,7 @@ export default function SeniorBridgePage() {
         description: 'Could not resolve the doubt. Please try again.',
       });
     }
-  }
+  };
 
 
   const handleReset = () => {

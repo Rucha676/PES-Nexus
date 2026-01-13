@@ -50,16 +50,20 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Checks if a senior is resolving a doubt. 
+    // Checks if a senior is resolving a doubt.
     // This is true if the user is signed in, they are not the original owner,
-    // the new status is 'resolved', and only the 'status', 'senior', and 'solution' fields are being updated.
+    // the new status is 'resolved', and only the allowed fields are being updated.
     function isResolvingDoubt() {
       let changedKeys = request.resource.data.keys().diff(resource.data.keys());
+      // A senior can update status, senior, solution, and the timestamp.
+      let allowedKeys = ['status', 'senior', 'solution', 'timestamp'];
       return isSignedIn()
              && !isOwner(resource.data.studentId)
              && request.resource.data.status == 'resolved'
              && changedKeys.hasAll(['status', 'senior', 'solution'])
-             && changedKeys.size() == 3;
+             && changedKeys.size() >= 3
+             && changedKeys.size() <= 4
+             && changedKeys.hasOnly(allowedKeys);
     }
 
     // --- Collection Rules ---
