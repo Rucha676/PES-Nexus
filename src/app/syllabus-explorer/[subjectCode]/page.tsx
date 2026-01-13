@@ -11,11 +11,11 @@ const allSubjects = [
 ];
 
 type SubjectDetailsPageProps = {
-  params: { subjectCode: string };
+  params: Promise<{ subjectCode: string }>;
 };
 
 export default async function SubjectDetailsPage({ params }: SubjectDetailsPageProps) {
-  const { subjectCode } = params;
+  const { subjectCode } = await params;
   
   // Find the subject on the server
   const subject = allSubjects.find(s => s.code === subjectCode);

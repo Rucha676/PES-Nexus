@@ -13,12 +13,11 @@ const allSubjects = [
 ];
 
 type UnitDetailsPageProps = {
-  params: { subjectCode: string; unitSlug: string };
+  params: Promise<{ subjectCode: string; unitSlug: string }>;
 };
 
-// This is a Server Component, now correctly typed.
 export default async function UnitDetailsPage({ params }: UnitDetailsPageProps) {
-  const { subjectCode, unitSlug } = params;
+  const { subjectCode, unitSlug } = await params;
 
   // Find the subject on the server
   const subject = allSubjects.find(

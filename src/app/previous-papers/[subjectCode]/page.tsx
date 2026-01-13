@@ -120,11 +120,11 @@ const papers: Record<string, PaperContent[]> = {
 };
 
 type PreviousPaperPageProps = {
-    params: { subjectCode: string };
+  params: Promise<{ subjectCode: string }>;
 };
 
 export default async function PreviousPaperPage({ params }: PreviousPaperPageProps) {
-  const { subjectCode } = params;
+  const { subjectCode } = await params;
   
   const subject = allSubjects.find(s => s.code === subjectCode);
   
