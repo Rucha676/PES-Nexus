@@ -82,10 +82,13 @@ export async function getResourcesAction(prevState: ResourceState, formData: For
       return { message: 'error', error: 'Could not find the selected subject.' };
   }
 
-  // Create a string representation of the subject's units and topics
-  const subjectContent = subject.units?.map(unit => 
-    `Unit: ${unit.title}\nTopics:\n- ${unit.topics.join('\n- ')}`
-  ).join('\n\n') || subject.name;
+  // Create a string representation of the subject's units and topics.
+  // If units are null, fallback to just using the subject name.
+  const subjectContent = subject.units 
+    ? subject.units.map(unit => 
+        `Unit: ${unit.title}\nTopics:\n- ${unit.topics.join('\n- ')}`
+      ).join('\n\n')
+    : subject.name;
 
 
   try {

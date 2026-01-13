@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,7 @@ import { Send, CheckCircle, Clock, MessageSquareWarning, CircleHelp, User, Messa
 import { useState, useMemo, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { useUser, useFirestore, useCollection, useMemoFirebase, useDoc } from '@/firebase';
-import { collection, serverTimestamp, query, where, doc, updateDoc, writeBatch, addDoc } from 'firebase/firestore';
+import { collection, serverTimestamp, query, where, doc, updateDoc, writeBatch, addDoc, getDoc, increment } from 'firebase/firestore';
 import type { Doubt, Student, LeaderboardEntry } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -119,12 +118,36 @@ export default function SeniorBridgePage() {
     if (!firestore || !userProfile || !resolvingDoubt || !solution || !user) return;
 
     try {
+      const batch = writeBatch(firestore);
+
+      // 1. Update the doubt document
       const doubtRef = doc(firestore, 'doubts', resolvingDoubt.id);
-      await updateDoc(doubtRef, {
+      batch.update(doubtRef, {
         status: 'resolved',
         senior: userProfile.name,
         solution: solution,
       });
+
+      // 2. Update the senior's leaderboard entry
+      const leaderboardRef = doc(firestore, 'leaderboard', user.uid);
+      const leaderboardDoc = await getDoc(leaderboardRef);
+
+      if (leaderboardDoc.exists()) {
+          batch.update(leaderboardRef, {
+              points: increment(5),
+              doubtsResolved: increment(1)
+          });
+      } else {
+          batch.set(leaderboardRef, {
+              id: user.uid,
+              name: userProfile.name,
+              points: 5,
+              doubtsResolved: 1
+          });
+      }
+
+      // Commit the batch
+      await batch.commit();
 
       toast({
         title: 'Doubt Resolved!',
