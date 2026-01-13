@@ -1,3 +1,4 @@
+
 'use server';
 
 import { getCuratedResourceSuggestions } from '@/ai/flows/curated-resource-suggestions';
@@ -83,12 +84,17 @@ export async function getResourcesAction(prevState: ResourceState, formData: For
   }
 
   // Create a string representation of the subject's units and topics.
-  // If units are null, fallback to just using the subject name.
-  const subjectContent = subject.units 
+  // If units are null or empty, fallback to just using the subject name.
+  const subjectContent = (subject.units && subject.units.length > 0)
     ? subject.units.map(unit => 
         `Unit: ${unit.title}\nTopics:\n- ${unit.topics.join('\n- ')}`
       ).join('\n\n')
     : subject.name;
+
+  // Ensure subjectContent is not empty
+  if (!subjectContent.trim()) {
+    return { message: 'error', error: 'Could not generate content for the selected subject.' };
+  }
 
 
   try {
