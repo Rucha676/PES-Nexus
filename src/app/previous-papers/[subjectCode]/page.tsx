@@ -119,8 +119,11 @@ const papers: Record<string, PaperContent[]> = {
     ]
 };
 
+type PreviousPaperPageProps = {
+    params: { subjectCode: string };
+};
 
-export default async function PreviousPaperPage({ params }: { params: { subjectCode: string } }) {
+export default async function PreviousPaperPage({ params }: PreviousPaperPageProps) {
   const { subjectCode } = params;
   
   const subject = allSubjects.find(s => s.code === subjectCode);

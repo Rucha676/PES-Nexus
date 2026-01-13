@@ -10,8 +10,11 @@ const allSubjects = [
   ...entc_2nd_year_4th_sem_syllabus.subjects
 ];
 
+type SubjectDetailsPageProps = {
+  params: { subjectCode: string };
+};
 
-export default async function SubjectDetailsPage({ params }: { params: { subjectCode: string } }) {
+export default async function SubjectDetailsPage({ params }: SubjectDetailsPageProps) {
   const { subjectCode } = params;
   
   // Find the subject on the server
