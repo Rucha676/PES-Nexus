@@ -31,7 +31,7 @@ type ResourceState = {
 
 
 const initialExplainState = { message: '', explanation: '' };
-const initialResourceState: ResourceState = { message: '' };
+const initialResourceState: ResourceState = { message: '', error: null };
 
 let messageIdCounter = 0;
 const getUniqueMessageId = () => `msg-${messageIdCounter++}`;
@@ -191,7 +191,7 @@ function SubmitButton() {
   );
 }
 
-function WelcomeContent({onRequestResource, formRef}: {onRequestResource: (formData: FormData) => void, formRef: React.RefObject<HTMLFormElement>}) {
+function WelcomeContent({onRequestResource, formRef}: {onRequestResource: (formData: FormData) => void, formRef: React.RefObject<HTMLFormElement | null>}) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
