@@ -32,7 +32,7 @@ export type Syllabus = {
 };
 
 export type Doubt = {
-    id: string;
+    id:string;
     studentId: string;
     studentName: string;
     studentYear: number;

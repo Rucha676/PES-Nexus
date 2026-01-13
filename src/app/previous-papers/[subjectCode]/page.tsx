@@ -123,7 +123,6 @@ const papers: Record<string, PaperContent[]> = {
 export default async function PreviousPaperPage({ params }: { params: { subjectCode: string } }) {
   const { subjectCode } = params;
   
-  // Find the subject and papers on the server
   const subject = allSubjects.find(s => s.code === subjectCode);
   
   if (!subject) {
