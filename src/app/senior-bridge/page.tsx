@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -57,7 +58,14 @@ export default function SeniorBridgePage() {
   const { data: myDoubts, isLoading: isLoadingMyDoubts } = useCollection<Doubt>(myDoubtsQuery);
   
   const openDoubts = useMemo(() => {
-    if (!allPendingDoubts || !userProfile || userProfile.year <= 1) return [];
+    // This is the critical fix. Ensure both userProfile and doubts are loaded before filtering.
+    if (!allPendingDoubts || !userProfile) {
+        return [];
+    }
+    // Seniors (Year > 1) can see doubts from their major from students in lower years.
+    if (userProfile.year <= 1) {
+        return [];
+    }
     return allPendingDoubts.filter(doubt => 
         doubt.major === userProfile.major && doubt.studentYear < userProfile.year
     );
@@ -283,7 +291,7 @@ export default function SeniorBridgePage() {
                 <CardDescription>Help others by resolving doubts from students in your department.</CardDescription>
             </CardHeader>
             <CardContent>
-                {isLoadingOpenDoubts ? (
+                {isLoadingOpenDoubts || isProfileLoading ? (
                      <div className="space-y-4">
                         <Skeleton className="h-24 w-full" />
                         <Skeleton className="h-24 w-full" />
@@ -350,3 +358,5 @@ export default function SeniorBridgePage() {
     </>
   );
 }
+
+    
