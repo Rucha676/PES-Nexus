@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useRef, useEffect, useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
@@ -19,8 +20,18 @@ type Message = {
   content: string | React.ReactNode;
 };
 
+type ResourceState = {
+  message: string;
+  resources?: CuratedResourceSuggestionsOutput | null;
+  errors?: {
+    subject?: string[];
+  };
+  error?: string | null;
+};
+
+
 const initialExplainState = { message: '', explanation: '' };
-const initialResourceState: { message: string, resources?: CuratedResourceSuggestionsOutput | null } = { message: '' };
+const initialResourceState: ResourceState = { message: '' };
 
 let messageIdCounter = 0;
 const getUniqueMessageId = () => `msg-${messageIdCounter++}`;
