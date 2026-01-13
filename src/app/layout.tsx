@@ -31,7 +31,7 @@ function MainApp({ children }: { children: React.ReactNode }) {
   return (
      <div className="flex h-screen bg-background">
       {/* Sidebar */}
-      <aside className="w-64 bg-sidebar text-sidebar-foreground p-6 flex flex-col justify-between">
+      <aside className="w-64 bg-card text-card-foreground p-6 flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-3 mb-8">
             <Logo className="h-8 w-8 text-primary" />
@@ -140,7 +140,7 @@ function MainApp({ children }: { children: React.ReactNode }) {
             <LogOut className="mr-2 h-4 w-4"/>
             Sign Out
           </Button>
-          <div className="text-xs text-sidebar-foreground/60">
+          <div className="text-xs text-muted-foreground/60">
             Powered by Google Gemini
           </div>
         </div>
