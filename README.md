@@ -17,7 +17,7 @@ PES-Nexus is a centralized platform designed to bridge the gap between students,
 * **Backend & Database:** Firebase Firestore (Real-time NoSQL)
 * **Authentication:** Firebase Auth
 * **Storage:** Firebase Cloud Storage (for PDFs & Papers)
-* **Hosting:** Firebase Hosting
+* **Hosting:** vercel
 
 ## 📦 Installation & Setup
 1. Clone the repository:
